@@ -1,0 +1,24 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: doc-blacklist-mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    ports:
+      - "27017:27017"
+  service:
+    build:
+      context: ./service
+      dockerfile: Dockerfile.service
+    container_name: doc-blacklist-service
+    ports:
+      - "3001:3001"
+  ui:
+    build:
+      context: ./ui
+      dockerfile: Dockerfile.ui
+    container_name: doc-blacklist-ui
+    ports:
+      - "3000:3000"
