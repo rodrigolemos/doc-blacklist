@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import CreateDocumentService from '../services/CreateDocumentService';
+import DeleteDocumentService from '../services/DeleteDocumentService';
 import ListDocumentsService from '../services/ListDocumentsService';
 import UpdateDocumentService from '../services/UpdateDocumentService';
 
@@ -22,6 +23,12 @@ class DocumentController {
     const updateDocumentService = new UpdateDocumentService();
     const document = await updateDocumentService.execute(req.body);
     return res.status(200).send(document);
+  }
+
+  public async destroy(req: Request, res: Response): Promise<Response> {
+    const deleteDocumentService = new DeleteDocumentService();
+    await deleteDocumentService.execute(req.body);
+    return res.status(204).send({});
   }
 
 }
