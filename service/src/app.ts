@@ -1,7 +1,7 @@
-// import { getServerConnection } from './config/database';
+import { getServerConnection } from './config/database';
 import app from './server';
 
-// getServerConnection();
+getServerConnection();
 
 const port = process.env.PORT || 3001;
 

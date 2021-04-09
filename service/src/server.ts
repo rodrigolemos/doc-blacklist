@@ -1,8 +1,9 @@
 import 'reflect-metadata';
 import 'dotenv/config';
 import 'express-async-errors';
+import AppError from './errors/AppError';
 
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
@@ -27,5 +28,18 @@ const limiter = rateLimit({
 app.use(limiter);
 
 app.use(routes);
+
+// It handles errors in any layer of the application
+app.use((err: Error, _req: Request, response: Response, _: NextFunction) => {
+  if (err instanceof AppError) {
+    return response.status(err.statusCode).json({
+      message: err.message
+    })
+  }
+  return response.status(500).json({
+    status: 'error',
+    message: 'Internal server error'
+  })
+});
 
 export default app;
