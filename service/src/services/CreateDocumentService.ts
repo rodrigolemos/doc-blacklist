@@ -1,6 +1,7 @@
 import { getRepository } from 'typeorm';
 import { Document } from '../models/Document';
 import AppError from '../errors/AppError';
+import { validateCPF } from '../utils/document-validator';
 
 interface IRequest {
   value: string;
@@ -12,6 +13,13 @@ class CreateDocumentService {
 
   public async execute(body: IRequest): Promise<Document> {
     const { value, blacklist, type } = body;
+
+    if (!validateCPF(value)) {
+      throw new AppError({
+        status: 1,
+        message: 'Documento inválido.'
+      }, 400);
+    }
 
     const documentRepository = getRepository(Document);
 
