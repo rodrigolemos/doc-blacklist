@@ -1,7 +1,7 @@
 import { getRepository } from 'typeorm';
 import { Document } from '../models/Document';
 import AppError from '../errors/AppError';
-import { validateCPF } from '../utils/document-validator';
+import { validateDocument } from '../utils/document-validator';
 
 interface IRequest {
   value?: string;
@@ -12,14 +12,16 @@ interface IRequest {
 class ListDocumentsService {
 
   public async execute(query: IRequest): Promise<Document[]> {
-    const { value, blacklist, type } = query;
+    const { value, blacklist } = query;
 
     const documentRepository = getRepository(Document);
 
     const where: IRequest = {};
 
     if (value) {
-      if (!validateCPF(value)) {
+      const validation = validateDocument(value);
+
+      if (!validation.isValid) {
         throw new AppError({
           status: 1,
           message: 'Documento inválido.'
@@ -27,14 +29,16 @@ class ListDocumentsService {
       }
 
       where.value = value;
+
+      const type = validation.type;
+
+      if (type) {
+        where.type = type;
+      }
     }
 
     if (blacklist) {
       where.blacklist = eval(blacklist);
-    }
-
-    if (type) {
-      where.type = type;
     }
 
     const documents = await documentRepository.find({ where });
