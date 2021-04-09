@@ -14,7 +14,9 @@ services:
       dockerfile: Dockerfile.service
     container_name: doc-blacklist-service
     ports:
-      - "3001:3001"
+      - "5000:5000"
+    depends_on:
+      - "mongodb"
   ui:
     build:
       context: ./ui
