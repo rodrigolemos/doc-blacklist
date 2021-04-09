@@ -27,6 +27,15 @@ const limiter = rateLimit({
 
 app.use(limiter);
 
+// It logs request quantity
+export let requestsQuantity = 0;
+
+app.use((_req: Request, _res: Response, next: NextFunction) => {
+  requestsQuantity++;
+  next();
+});
+
+// It uses the app routes
 app.use(routes);
 
 // It handles errors in any layer of the application
