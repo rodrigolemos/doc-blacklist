@@ -3,7 +3,7 @@ import DocumentController from '../controllers/DocumentController';
 
 const documentsRouter = Router();
 
-documentsRouter.get('/:id?', DocumentController.index);
+documentsRouter.get('/', DocumentController.index);
 documentsRouter.post('/', DocumentController.store);
 
 export default documentsRouter;
