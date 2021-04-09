@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 
 import CreateDocumentService from '../services/CreateDocumentService';
 import ListDocumentsService from '../services/ListDocumentsService';
+import UpdateDocumentService from '../services/UpdateDocumentService';
+
 class DocumentController {
 
   public async index(req: Request, res: Response): Promise<Response> {
@@ -14,6 +16,12 @@ class DocumentController {
     const createDocumentService = new CreateDocumentService();
     const document = await createDocumentService.execute(req.body);
     return res.status(201).send(document);
+  }
+
+  public async update(req: Request, res: Response): Promise<Response> {
+    const updateDocumentService = new UpdateDocumentService();
+    const document = await updateDocumentService.execute(req.body);
+    return res.status(200).send(document);
   }
 
 }
