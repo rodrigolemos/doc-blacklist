@@ -1,6 +1,7 @@
 import { getRepository } from 'typeorm';
 import { Document } from '../models/Document';
 import AppError from '../errors/AppError';
+import { validateCPF } from '../utils/document-validator';
 
 interface IRequest {
   value?: string;
@@ -18,6 +19,13 @@ class ListDocumentsService {
     const where: IRequest = {};
 
     if (value) {
+      if (!validateCPF(value)) {
+        throw new AppError({
+          status: 1,
+          message: 'Documento inválido.'
+        }, 400);
+      }
+
       where.value = value;
     }
 
