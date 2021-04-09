@@ -8,7 +8,7 @@ import UpdateDocumentService from '../services/UpdateDocumentService';
 class DocumentController {
 
   public async index(req: Request, res: Response): Promise<Response> {
-    const listDocumentsService = new ListDocumentsService()
+    const listDocumentsService = new ListDocumentsService();
     const documents = await listDocumentsService.execute(req.query);
     return res.status(200).send(documents);
   }
