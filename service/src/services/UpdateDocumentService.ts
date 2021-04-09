@@ -29,8 +29,8 @@ class UpdateDocumentService {
 
     documentRegistered.blacklist = eval(blacklist);
 
-    if (documentRegistered.id) {
-      await documentRepository.update(documentRegistered.id, documentRegistered);
+    if (documentRegistered._id) {
+      await documentRepository.update(documentRegistered._id, documentRegistered);
     }
 
     return documentRegistered;
