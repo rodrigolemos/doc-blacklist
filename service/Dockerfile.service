@@ -2,6 +2,8 @@ FROM node:12.16.1-alpine
 RUN mkdir -p /app/src
 WORKDIR /app
 COPY src /app/src
+COPY .env /app/.env
+COPY ormconfig.js /app/ormconfig.js
 COPY tsconfig.json /app/tsconfig.json
 COPY package.json /app/package.json
 COPY package-lock.json /app/package-lock.json
