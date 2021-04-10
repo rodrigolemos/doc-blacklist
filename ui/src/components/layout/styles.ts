@@ -5,19 +5,14 @@ export const Container = styled.div`
   display: grid;
   grid-template-areas:
     'nav'
-    'info-section'
     'content';
   grid-template-columns: 1fr;
-  grid-template-rows: 10vh 17vh 73vh;
+  grid-template-rows: 10vh 90vh;
 
   background-color: #f5f6f7;
 
   .nav {
     grid-area: nav;
-  }
-
-  .info-section {
-    grid-area: info-section;
   }
 
   .content {
