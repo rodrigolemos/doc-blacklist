@@ -9,7 +9,7 @@ export const Container = styled.div`
   grid-template-columns: 1fr;
   grid-template-rows: 10vh 90vh;
 
-  background-color: #f5f6f7;
+  background-color: #f4f5f6;
 
   .nav {
     grid-area: nav;

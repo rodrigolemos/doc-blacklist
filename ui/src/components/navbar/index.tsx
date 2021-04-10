@@ -2,6 +2,8 @@ import React, { ReactElement } from 'react';
 import { BsCardChecklist } from 'react-icons/bs';
 import { DesktopNav, NavContent, Title, User } from './styles';
 
+import { Button, Stack } from '@chakra-ui/react';
+
 const Navbar: React.FC = (): ReactElement => {
   return (
     <>
@@ -11,7 +13,12 @@ const Navbar: React.FC = (): ReactElement => {
             <BsCardChecklist />
             <span>Document Blacklist</span>
           </Title>
-          <User>User</User>
+          <User>
+            <Stack direction="row" align="center">
+              <Button colorScheme="gray">Informações do Servidor</Button>
+              <Button colorScheme="orange">Incluir Documento</Button>
+            </Stack>
+          </User>
         </NavContent>
       </DesktopNav>
     </>

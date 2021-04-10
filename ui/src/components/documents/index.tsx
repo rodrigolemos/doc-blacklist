@@ -3,14 +3,14 @@ import { Container, Content, Filters } from './styles';
 import { useDocuments } from '../../hooks/documents';
 import DocumentsTable from '../documents-table';
 
-import { Button, Input, Radio, RadioGroup, Select, Stack } from "@chakra-ui/react";
+import { Button, Input, Radio, RadioGroup, Select, Stack } from '@chakra-ui/react';
 
 const Documents: React.FC = (): ReactElement => {
   const [type, setType] = useState<string>('');
   const [blacklist, setBlacklist] = useState<string>('');
   const [value, setValue] = useState<string>('');
 
-  const { fetchDocuments, clearSearch } = useDocuments();
+  const { fetchDocuments, clearSearch, requestStatus } = useDocuments();
 
   const handleType = (value: string): void => {
     clearSearch();
@@ -75,7 +75,13 @@ const Documents: React.FC = (): ReactElement => {
           </Stack>
 
           <Stack direction="row" align="center">
-            <Button colorScheme="blue" onClick={handleSearchButton}>Pesquisar</Button>
+            <Button
+              colorScheme="blue"
+              onClick={handleSearchButton}
+              isLoading={requestStatus.isLoading}
+            >
+              Pesquisar
+            </Button>
           </Stack>
         </Filters>
 
