@@ -12,11 +12,13 @@ interface IRequest {
 class ListDocumentsService {
 
   public async execute(query: IRequest): Promise<Document[]> {
-    const { value, blacklist } = query;
+    const { value, blacklist, type } = query;
 
     const documentRepository = getRepository(Document);
 
     const where: IRequest = {};
+
+    let validType;
 
     if (value) {
       const validation = validateDocument(value);
@@ -30,15 +32,19 @@ class ListDocumentsService {
 
       where.value = value;
 
-      const type = validation.type;
+      validType = validation.type;
 
-      if (type) {
-        where.type = type;
+      if (validType) {
+        where.type = validType;
       }
     }
 
     if (blacklist) {
       where.blacklist = eval(blacklist);
+    }
+
+    if (!validType && type) {
+      where.type = type;
     }
 
     const documents = await documentRepository.find({ where });
