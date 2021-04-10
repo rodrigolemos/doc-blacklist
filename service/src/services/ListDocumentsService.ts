@@ -18,8 +18,6 @@ class ListDocumentsService {
 
     const where: IRequest = {};
 
-    let validType;
-
     if (value) {
       const validation = validateDocument(value);
 
@@ -31,19 +29,13 @@ class ListDocumentsService {
       }
 
       where.value = value;
-
-      validType = validation.type;
-
-      if (validType) {
-        where.type = validType;
-      }
     }
 
     if (blacklist) {
       where.blacklist = eval(blacklist);
     }
 
-    if (!validType && type) {
+    if (type) {
       where.type = type;
     }
 
