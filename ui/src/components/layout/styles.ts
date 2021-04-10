@@ -5,7 +5,7 @@ export const Container = styled.div`
   display: grid;
   grid-template-areas:
     'nav'
-    'info'
+    'info-section'
     'content';
   grid-template-columns: 1fr;
   grid-template-rows: 10vh 15vh 75vh;
@@ -16,8 +16,8 @@ export const Container = styled.div`
     grid-area: nav;
   }
 
-  .info {
-    grid-area: info;
+  .info-section {
+    grid-area: info-section;
   }
 
   .content {
