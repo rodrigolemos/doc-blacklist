@@ -12,7 +12,6 @@ export const Container = styled.div`
   justify-content: center;
 `;
 
-
 export const Content = styled.div`
   display: flex;
   align-items: center;
@@ -20,4 +19,13 @@ export const Content = styled.div`
 
   width: 70%;
   height: 100%;
+`;
+
+export const Card = styled.div`
+  width: 80%;
+  height: 80%;
+  margin: 0 5px;
+
+  border: 1px solid #ddd;
+  border-radius: 5px;
 `;

@@ -8,7 +8,7 @@ export const Container = styled.div`
     'info-section'
     'content';
   grid-template-columns: 1fr;
-  grid-template-rows: 10vh 15vh 75vh;
+  grid-template-rows: 10vh 17vh 73vh;
 
   background-color: #f5f6f7;
 
