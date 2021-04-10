@@ -7,9 +7,18 @@ interface IDocument {
   blacklist: boolean | undefined;
 }
 
+interface IRequestStatus {
+  isLoading: boolean;
+  hasError: boolean;
+  errorMessage?: string;
+}
+
 interface IDocuments {
   documents: IDocument[] | undefined;
   fetchDocuments(document: IDocument): void;
+  deleteDocument(document: string): Promise<boolean>;
+  requestStatus: IRequestStatus;
+  clearSearch(): void;
 }
 
 interface IDocumentsProvider {
@@ -19,9 +28,21 @@ interface IDocumentsProvider {
 const DocumentsContext = createContext({} as IDocuments);
 
 const DocumentsProvider = ({ children }: IDocumentsProvider) => {
-  const [documents, setDocuments] = useState<IDocument[]>();
+  const [documents, setDocuments] = useState<IDocument[]>([]);
+  const [requestStatus, setRequestStatus] = useState<IRequestStatus>({
+    isLoading: false,
+    hasError: false
+  });
+
+  const clearSearch = (): void => {
+    setDocuments([]);
+  }
 
   const fetchDocuments = async (document: IDocument): Promise<void> => {
+    setRequestStatus({
+      isLoading: true,
+      hasError: false
+    });
 
     try {
       const response = await api.get('/documents', {
@@ -31,15 +52,64 @@ const DocumentsProvider = ({ children }: IDocumentsProvider) => {
           value: document.value
         }
       });
-      console.log(response.data);
+
+      setDocuments(response.data);
+      
+      setRequestStatus({
+        isLoading: false,
+        hasError: false
+      });
+
     } catch (err) {
-      console.log(err);
+      clearSearch();
+
+      setRequestStatus({
+        isLoading: false,
+        hasError: false,
+        errorMessage: err.message
+      });
     }
-    setDocuments([]);
+  }
+
+  const deleteDocument = async (document: string): Promise<boolean> => {
+    setRequestStatus({
+      isLoading: true,
+      hasError: false
+    });
+
+    try {
+      await api.delete('/documents', {
+        data: {
+          value: document
+        }
+      });
+      
+      setRequestStatus({
+        isLoading: false,
+        hasError: false
+      });
+
+      return true;
+
+    } catch (err) {
+      setRequestStatus({
+        isLoading: false,
+        hasError: false,
+        errorMessage: err.message
+      });
+
+      return false;
+    }
   }
 
   return (
-    <DocumentsContext.Provider value={{ documents, fetchDocuments }}>
+    <DocumentsContext.Provider value={{
+      documents,
+      fetchDocuments,
+      requestStatus,
+      clearSearch,
+      deleteDocument
+    }}>
       { children }
     </DocumentsContext.Provider>
   )

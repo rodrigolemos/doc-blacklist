@@ -1,6 +1,7 @@
 import React, { ReactElement, useState } from 'react';
 import { Container, Content, Filters } from './styles';
 import { useDocuments } from '../../hooks/documents';
+import DocumentsTable from '../documents-table';
 
 import { Button, Input, Radio, RadioGroup, Select, Stack } from "@chakra-ui/react";
 
@@ -9,7 +10,22 @@ const Documents: React.FC = (): ReactElement => {
   const [blacklist, setBlacklist] = useState<string>('');
   const [value, setValue] = useState<string>('');
 
-  const { fetchDocuments } = useDocuments();
+  const { fetchDocuments, clearSearch } = useDocuments();
+
+  const handleType = (value: string): void => {
+    clearSearch();
+    setType(value);
+  }
+
+  const handleBlacklist = (e: any): void => {
+    clearSearch();
+    setBlacklist(e.target.value);
+  }
+
+  const handleDocumentValue = (e: any): void => {
+    clearSearch();
+    setValue(e.target.value);
+  }
 
   const handleSearchButton = () => {
     let queryBlacklist = undefined;
@@ -35,7 +51,7 @@ const Documents: React.FC = (): ReactElement => {
 
         <Filters>
           <Stack spacing={15} direction="row" align="center" w="90%">
-            <RadioGroup onChange={setType} value={type} mr={10}>
+            <RadioGroup onChange={handleType} value={type} mr={10}>
               <Stack direction="row">
                 <Radio value="">Todos</Radio>
                 <Radio value="P">CPF</Radio>
@@ -43,7 +59,7 @@ const Documents: React.FC = (): ReactElement => {
               </Stack>
             </RadioGroup>
 
-            <Select onChange={e => { setBlacklist(e.target.value)}} value={blacklist}>
+            <Select onChange={handleBlacklist} value={blacklist}>
               <option value="">Todos os documentos</option>
               <option value="Y">Somente os que são blacklist</option>
               <option value="N">Somente os que NÃO são blacklist</option>
@@ -54,7 +70,7 @@ const Documents: React.FC = (): ReactElement => {
               minLength={11}
               maxLength={14}
               value={value}
-              onChange={(e) => { setValue(e.target.value)}}
+              onChange={handleDocumentValue}
             />
           </Stack>
 
@@ -63,7 +79,7 @@ const Documents: React.FC = (): ReactElement => {
           </Stack>
         </Filters>
 
-        {/* <span>Table</span> */}
+        <DocumentsTable />
 
       </Content>
     </Container>
