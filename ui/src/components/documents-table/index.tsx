@@ -24,26 +24,45 @@ import {
   useToast
 } from '@chakra-ui/react';
 
-const DocumentsTable: React.FC = (): ReactElement => {
-  const { documents, requestStatus, deleteDocument, clearSearch } = useDocuments();
-  const toast = useToast();
-  const [documentToDelete, setDocumentToDelete] = useState<string>('');
+interface IDocumentUpdate {
+  value: string;
+  blacklist: boolean | undefined;
+}
 
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+const DocumentsTable: React.FC = (): ReactElement => {
+  const toast = useToast();
+  const { documents, requestStatus, deleteDocument, updateDocument, clearSearch } = useDocuments();
+
+  const [documentToDelete, setDocumentToDelete] = useState<string>('');
+  const [documentToUpdate, setDocumentToUpdate] = useState<IDocumentUpdate>({} as IDocumentUpdate);
+
+  const [isDeleteOpen, setIsDeleteOpen] = useState<boolean>(false);
+  const [isUpdateOpen, setIsUpdateOpen] = useState<boolean>(false);
+
   const cancelRef = useRef() as React.MutableRefObject<HTMLInputElement> | undefined;
 
-  const onClose = () => {
+  const onDeleteClose = () => {
     setDocumentToDelete('');
-    setIsOpen(false)
+    setIsDeleteOpen(false)
+  };
+
+  const onUpdateClose = () => {
+    setDocumentToUpdate({} as IDocumentUpdate);
+    setIsUpdateOpen(false)
   };
 
   const setDeletion = (documentValue: string) => {
     setDocumentToDelete(documentValue);
-    setIsOpen(true);
+    setIsDeleteOpen(true);
+  };
+
+  const setUpdate = (documentValue: IDocumentUpdate) => {
+    setDocumentToUpdate(documentValue);
+    setIsUpdateOpen(true);
   };
 
   const handleDeleteDocument = async () => {
-    setIsOpen(false);
+    setIsDeleteOpen(false);
     clearSearch();
     if (await deleteDocument(documentToDelete)) {
       toast({
@@ -56,6 +75,31 @@ const DocumentsTable: React.FC = (): ReactElement => {
     } else {
       toast({
         title: 'Não foi possível excluir o documento. Tente novamente mais tarde.',
+        position: 'top',
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+  }
+
+  const handleUpdateDocument = async () => {
+    setIsUpdateOpen(false);
+    clearSearch();
+
+    const blacklist = !documentToUpdate.blacklist;
+
+    if (await updateDocument(documentToUpdate.value, blacklist)) {
+      toast({
+        title: 'Blacklist atualizada.',
+        position: 'top',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: 'Não foi possível atualizar o documento na blacklist. Tente novamente mais tarde.',
         position: 'top',
         status: 'error',
         duration: 9000,
@@ -90,14 +134,14 @@ const DocumentsTable: React.FC = (): ReactElement => {
         <TableContainer>
           <>
             <AlertDialog
-              isOpen={isOpen}
+              isOpen={isDeleteOpen}
               leastDestructiveRef={cancelRef}
-              onClose={onClose}
+              onClose={onDeleteClose}
             >
               <AlertDialogOverlay>
                 <AlertDialogContent>
                   <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                    Excluir Documento {documentToDelete}
+                    Excluir Documento {documentToDelete}?
                   </AlertDialogHeader>
 
                   <AlertDialogBody>
@@ -105,11 +149,38 @@ const DocumentsTable: React.FC = (): ReactElement => {
                   </AlertDialogBody>
 
                   <AlertDialogFooter>
-                    <Button onClick={onClose}>
+                    <Button onClick={onDeleteClose}>
                       Cancelar
                     </Button>
                     <Button colorScheme="red" onClick={handleDeleteDocument} ml={3}>
                       Excluir
+                    </Button>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialogOverlay>
+            </AlertDialog>
+
+            <AlertDialog
+              isOpen={isUpdateOpen}
+              leastDestructiveRef={cancelRef}
+              onClose={onUpdateClose}
+            >
+              <AlertDialogOverlay>
+                <AlertDialogContent>
+                  <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                    Alterar blacklist do documento {documentToUpdate.value}?
+                  </AlertDialogHeader>
+
+                  <AlertDialogBody>
+                    Você pode voltar essa ação caso não tenha certeza.
+                  </AlertDialogBody>
+
+                  <AlertDialogFooter>
+                    <Button onClick={onUpdateClose}>
+                      Cancelar
+                    </Button>
+                    <Button colorScheme="facebook" onClick={handleUpdateDocument} ml={3}>
+                      Alterar
                     </Button>
                   </AlertDialogFooter>
                 </AlertDialogContent>
@@ -134,7 +205,7 @@ const DocumentsTable: React.FC = (): ReactElement => {
                   <Td>{document.value}</Td>
                   <Td>{handleBlacklist(document.blacklist)}</Td>
                   <Td>
-                    <Button colorScheme="facebook" onClick={() => setIsOpen(true)}>
+                    <Button colorScheme="facebook" onClick={() => { setUpdate(document) }}>
                       Alterar
                     </Button>
                   </Td>

@@ -17,6 +17,7 @@ interface IDocuments {
   documents: IDocument[] | undefined;
   fetchDocuments(document: IDocument): void;
   deleteDocument(document: string): Promise<boolean>;
+  updateDocument(document: string, blacklist: boolean): Promise<boolean>;
   requestStatus: IRequestStatus;
   clearSearch(): void;
 }
@@ -102,13 +103,44 @@ const DocumentsProvider = ({ children }: IDocumentsProvider) => {
     }
   }
 
+  const updateDocument = async (document: string, blacklist: boolean): Promise<boolean> => {
+    setRequestStatus({
+      isLoading: true,
+      hasError: false
+    });
+
+    try {
+      await api.put('/documents', {
+        value: document,
+        blacklist
+      });
+      
+      setRequestStatus({
+        isLoading: false,
+        hasError: false
+      });
+
+      return true;
+
+    } catch (err) {
+      setRequestStatus({
+        isLoading: false,
+        hasError: false,
+        errorMessage: err.message
+      });
+
+      return false;
+    }
+  }
+
   return (
     <DocumentsContext.Provider value={{
       documents,
       fetchDocuments,
       requestStatus,
       clearSearch,
-      deleteDocument
+      deleteDocument,
+      updateDocument
     }}>
       { children }
     </DocumentsContext.Provider>
