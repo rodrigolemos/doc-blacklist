@@ -6,7 +6,7 @@ export const handleDocumentType = (type: string): ReactElement => {
     case 'P':
       return <Badge colorScheme="green">CPF</Badge>
     case 'C':
-      return <Badge colorScheme="puple">CNPJ</Badge>
+      return <Badge colorScheme="purple">CNPJ</Badge>
     default:
       return <Badge>Não definido</Badge>
   }
