@@ -1,5 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import { Container, Content, Filters } from './styles';
+import { useDocuments } from '../../hooks/documents';
 
 import { Button, Input, Radio, RadioGroup, Select, Stack } from "@chakra-ui/react";
 
@@ -7,6 +8,26 @@ const Documents: React.FC = (): ReactElement => {
   const [type, setType] = useState<string>('');
   const [blacklist, setBlacklist] = useState<string>('');
   const [value, setValue] = useState<string>('');
+
+  const { fetchDocuments } = useDocuments();
+
+  const handleSearchButton = () => {
+    let queryBlacklist = undefined;
+
+    if (blacklist === 'Y') {
+      queryBlacklist = true;
+    }
+
+    if (blacklist === 'N') {
+      queryBlacklist = false;
+    }
+
+    fetchDocuments({
+      blacklist: queryBlacklist,
+      type,
+      value
+    });
+  }
 
   return (
     <Container>
@@ -29,7 +50,7 @@ const Documents: React.FC = (): ReactElement => {
             </Select>
 
             <Input
-              placeholder="Pesquise um documento..."
+              placeholder="Pesquise um número de documento..."
               minLength={11}
               maxLength={14}
               value={value}
@@ -38,7 +59,7 @@ const Documents: React.FC = (): ReactElement => {
           </Stack>
 
           <Stack direction="row" align="center">
-            <Button colorScheme="blue">Pesquisar</Button>
+            <Button colorScheme="blue" onClick={handleSearchButton}>Pesquisar</Button>
           </Stack>
         </Filters>
 
