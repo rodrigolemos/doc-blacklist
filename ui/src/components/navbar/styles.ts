@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const DesktopNav = styled.nav`
+export const DesktopNav = styled.div`
   z-index: 1;
   position: fixed;
   top: 0;

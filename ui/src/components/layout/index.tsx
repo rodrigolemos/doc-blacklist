@@ -3,21 +3,20 @@ import { Container } from './styles';
 
 import Navbar from '../../components/navbar';
 import InfoSection from '../../components/info-section';
+import Documents from '../../components/documents';
 
-interface ILayout {
-  children: ReactElement | ReactElement[];
-}
-
-export default function Layout({ children }: ILayout): ReactElement {
+export default function Layout(): ReactElement {
   return (
     <Container>
-      <div className="nav">
+      <nav className="nav">
         <Navbar />
-      </div>
-      <div className="info-section">
+      </nav>
+      <section className="info-section">
         <InfoSection />
-      </div>
-      <div className="content">{children}</div>
+      </section>
+      <section className="content">
+        <Documents />
+      </section>
     </Container>
   );
 }
