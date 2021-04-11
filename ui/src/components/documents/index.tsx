@@ -24,7 +24,7 @@ const Documents: React.FC = (): ReactElement => {
 
   const handleDocumentValue = (e: any): void => {
     clearSearch();
-    setValue(e.target.value);
+    setValue(e.target.value.replace(/\.|-|\//g, ''));
   }
 
   const handleSearchButton = () => {

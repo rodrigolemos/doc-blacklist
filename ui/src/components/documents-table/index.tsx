@@ -1,7 +1,7 @@
 import React, { ReactElement, useState, useRef } from 'react';
 import { useDocuments } from '../../hooks/documents';
 import { Centered, TableContainer } from './styles';
-import { handleDocumentType, handleBlacklist } from '../../utils/handle-display-info';
+import { handleDocument, handleDocumentType, handleBlacklist } from '../../utils/handle-display-info';
 
 import {
   AlertDialog,
@@ -202,7 +202,7 @@ const DocumentsTable: React.FC = (): ReactElement => {
               {documents.map(document => (
                 <Tr key={document.value}>
                   <Td>{handleDocumentType(document.type)}</Td>
-                  <Td>{document.value}</Td>
+                  <Td>{handleDocument(document.value)}</Td>
                   <Td>{handleBlacklist(document.blacklist)}</Td>
                   <Td>
                     <Button colorScheme="facebook" onClick={() => { setUpdate(document) }}>

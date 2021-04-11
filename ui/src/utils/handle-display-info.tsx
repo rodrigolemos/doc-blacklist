@@ -22,3 +22,12 @@ export const handleBlacklist = (blacklist: boolean | undefined): ReactElement =>
       return <Badge>Não definido</Badge>
   }
 }
+
+export const handleDocument = (document: string): string => {
+  let i = 0;
+  let pattern = '###.###.###-##';
+  if (document.length > 11) {
+    pattern = '##.###.###/####-##';
+  }
+  return pattern.replace(/#/g, () => document[i++] || '');
+}
