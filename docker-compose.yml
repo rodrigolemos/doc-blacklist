@@ -24,3 +24,5 @@ services:
     container_name: doc-blacklist-ui
     ports:
       - "3000:3000"
+    depends_on:
+      - "service"
