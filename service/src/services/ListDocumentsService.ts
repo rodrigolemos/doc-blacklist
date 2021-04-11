@@ -7,12 +7,12 @@ interface IRequest {
   value?: string;
   blacklist?: string;
   type?: string;
+  orderField?: string;
 }
-
 class ListDocumentsService {
 
   public async execute(query: IRequest): Promise<Document[]> {
-    const { value, blacklist, type } = query;
+    const { value, blacklist, type, orderField } = query;
 
     const documentRepository = getRepository(Document);
 
@@ -39,7 +39,13 @@ class ListDocumentsService {
       where.type = type;
     }
 
-    const documents = await documentRepository.find({ where });
+    let order = 'type';
+
+    if (orderField === 'type' || orderField === 'blacklist') {
+      order = orderField;
+    }
+
+    const documents = await documentRepository.find({ where, order: { [order]: 'ASC' } });
 
     if (!documents.length) {
       throw new AppError({
