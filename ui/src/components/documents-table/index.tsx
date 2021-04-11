@@ -124,7 +124,10 @@ const DocumentsTable: React.FC = (): ReactElement => {
 
   if (requestStatus.hasError) {
     return (
-      <div>{requestStatus.errorMessage || 'Erro'}</div>
+      <Alert status="error">
+        <AlertIcon />
+        {requestStatus.errorMessage || 'Erro'}
+      </Alert>
     );
   }
 
@@ -222,7 +225,7 @@ const DocumentsTable: React.FC = (): ReactElement => {
       ) : (
         <Alert status="info">
           <AlertIcon />
-          Nenhum documento encontrado para o filtro.
+          Clique em pesquisar para listar os documentos.
         </Alert>
       )}
     </>
