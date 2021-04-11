@@ -10,12 +10,13 @@ interface IDocument {
 interface IRequestStatus {
   isLoading: boolean;
   hasError: boolean;
-  errorMessage?: string;
+  errorMessage: string;
 }
 
 interface IDocuments {
   documents: IDocument[] | undefined;
-  fetchDocuments(document: IDocument): void;
+  addDocument(document: IDocument): Promise<boolean>;
+  fetchDocuments(document: IDocument): Promise<void>;
   deleteDocument(document: string): Promise<boolean>;
   updateDocument(document: string, blacklist: boolean): Promise<boolean>;
   requestStatus: IRequestStatus;
@@ -32,17 +33,57 @@ const DocumentsProvider = ({ children }: IDocumentsProvider) => {
   const [documents, setDocuments] = useState<IDocument[]>([]);
   const [requestStatus, setRequestStatus] = useState<IRequestStatus>({
     isLoading: false,
-    hasError: false
+    hasError: false,
+    errorMessage: ''
   });
 
   const clearSearch = (): void => {
     setDocuments([]);
   }
 
+  const addDocument = async (document: IDocument): Promise<boolean> => {
+    setRequestStatus({
+      isLoading: true,
+      hasError: false,
+      errorMessage: '',
+    });
+
+    try {
+      await api.post('/documents', {
+        type: document.type,
+        blacklist: document.blacklist,
+        value: document.value
+      });
+      
+      setRequestStatus({
+        isLoading: false,
+        hasError: false,
+        errorMessage: '',
+      });
+
+      clearSearch();
+
+      return true;
+
+    } catch (err) {
+
+      setRequestStatus({
+        isLoading: false,
+        hasError: true,
+        errorMessage: err.response.data.message.message
+      });
+
+      clearSearch();
+
+      return false;
+    }
+  }
+
   const fetchDocuments = async (document: IDocument): Promise<void> => {
     setRequestStatus({
       isLoading: true,
-      hasError: false
+      hasError: false,
+      errorMessage: '',
     });
 
     try {
@@ -58,7 +99,8 @@ const DocumentsProvider = ({ children }: IDocumentsProvider) => {
       
       setRequestStatus({
         isLoading: false,
-        hasError: false
+        hasError: false,
+        errorMessage: '',
       });
 
     } catch (err) {
@@ -66,8 +108,8 @@ const DocumentsProvider = ({ children }: IDocumentsProvider) => {
 
       setRequestStatus({
         isLoading: false,
-        hasError: false,
-        errorMessage: err.message
+        hasError: true,
+        errorMessage: err.response.data.message.message
       });
     }
   }
@@ -75,7 +117,8 @@ const DocumentsProvider = ({ children }: IDocumentsProvider) => {
   const deleteDocument = async (document: string): Promise<boolean> => {
     setRequestStatus({
       isLoading: true,
-      hasError: false
+      hasError: false,
+      errorMessage: '',
     });
 
     try {
@@ -87,7 +130,8 @@ const DocumentsProvider = ({ children }: IDocumentsProvider) => {
       
       setRequestStatus({
         isLoading: false,
-        hasError: false
+        hasError: false,
+        errorMessage: '',
       });
 
       return true;
@@ -95,8 +139,8 @@ const DocumentsProvider = ({ children }: IDocumentsProvider) => {
     } catch (err) {
       setRequestStatus({
         isLoading: false,
-        hasError: false,
-        errorMessage: err.message
+        hasError: true,
+        errorMessage: err.response.data.message.message
       });
 
       return false;
@@ -106,7 +150,8 @@ const DocumentsProvider = ({ children }: IDocumentsProvider) => {
   const updateDocument = async (document: string, blacklist: boolean): Promise<boolean> => {
     setRequestStatus({
       isLoading: true,
-      hasError: false
+      hasError: false,
+      errorMessage: '',
     });
 
     try {
@@ -117,7 +162,8 @@ const DocumentsProvider = ({ children }: IDocumentsProvider) => {
       
       setRequestStatus({
         isLoading: false,
-        hasError: false
+        hasError: false,
+        errorMessage: '',
       });
 
       return true;
@@ -125,8 +171,8 @@ const DocumentsProvider = ({ children }: IDocumentsProvider) => {
     } catch (err) {
       setRequestStatus({
         isLoading: false,
-        hasError: false,
-        errorMessage: err.message
+        hasError: true,
+        errorMessage: err.response.data.message.message
       });
 
       return false;
@@ -136,6 +182,7 @@ const DocumentsProvider = ({ children }: IDocumentsProvider) => {
   return (
     <DocumentsContext.Provider value={{
       documents,
+      addDocument,
       fetchDocuments,
       requestStatus,
       clearSearch,
