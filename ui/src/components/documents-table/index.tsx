@@ -190,7 +190,7 @@ const DocumentsTable: React.FC = (): ReactElement => {
               </AlertDialogOverlay>
             </AlertDialog>
           </>
-          <Table variant="simple">
+          <Table variant="striped">
             <TableCaption>Documentos cadastrados no sistema</TableCaption>
             <Thead>
               <Tr>
