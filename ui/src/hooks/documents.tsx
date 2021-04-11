@@ -16,7 +16,7 @@ interface IRequestStatus {
 interface IDocuments {
   documents: IDocument[] | undefined;
   addDocument(document: IDocument): Promise<boolean>;
-  fetchDocuments(document: IDocument): Promise<void>;
+  fetchDocuments(document: IDocument, orderField: string): Promise<void>;
   deleteDocument(document: string): Promise<boolean>;
   updateDocument(document: string, blacklist: boolean): Promise<boolean>;
   requestStatus: IRequestStatus;
@@ -79,7 +79,7 @@ const DocumentsProvider = ({ children }: IDocumentsProvider) => {
     }
   }
 
-  const fetchDocuments = async (document: IDocument): Promise<void> => {
+  const fetchDocuments = async (document: IDocument, orderField: string): Promise<void> => {
     setRequestStatus({
       isLoading: true,
       hasError: false,
@@ -91,7 +91,8 @@ const DocumentsProvider = ({ children }: IDocumentsProvider) => {
         params: {
           type: document.type,
           blacklist: document.blacklist,
-          value: document.value
+          value: document.value,
+          orderField
         }
       });
 

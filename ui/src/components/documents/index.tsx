@@ -10,6 +10,8 @@ const Documents: React.FC = (): ReactElement => {
   const [blacklist, setBlacklist] = useState<string>('');
   const [value, setValue] = useState<string>('');
 
+  const [order, setOrder] = useState<string>('type');
+
   const { fetchDocuments, clearSearch, requestStatus } = useDocuments();
 
   const handleType = (value: string): void => {
@@ -27,6 +29,11 @@ const Documents: React.FC = (): ReactElement => {
     setValue(e.target.value.replace(/\.|-|\//g, ''));
   }
 
+  const handleOrder = (e: any): void => {
+    clearSearch();
+    setOrder(e.target.value);
+  }
+
   const handleSearchButton = () => {
     let queryBlacklist = undefined;
 
@@ -42,7 +49,7 @@ const Documents: React.FC = (): ReactElement => {
       blacklist: queryBlacklist,
       type,
       value
-    });
+    }, order);
   }
 
   return (
@@ -50,7 +57,7 @@ const Documents: React.FC = (): ReactElement => {
       <Content>
 
         <Filters>
-          <Stack spacing={15} direction="row" align="center" w="90%">
+          <Stack spacing={10} direction="row" align="center" w="90%">
             <RadioGroup onChange={handleType} value={type} mr={10}>
               <Stack direction="row">
                 <Radio value="">Todos</Radio>
@@ -66,15 +73,22 @@ const Documents: React.FC = (): ReactElement => {
             </Select>
 
             <Input
-              placeholder="Pesquise um número de documento..."
+              placeholder="Pesquise um documento..."
               minLength={11}
               maxLength={14}
               value={value}
               onChange={handleDocumentValue}
             />
+
+            <Select onChange={handleOrder} value={order}>
+              <option value="type">Ordenar por tipo</option>
+              <option value="blacklist">Ordenar por blacklist</option>
+            </Select>
+
           </Stack>
 
-          <Stack direction="row" align="center">
+          <Stack direction="row" align="center" ml={2}>
+
             <Button
               colorScheme="blue"
               onClick={handleSearchButton}
