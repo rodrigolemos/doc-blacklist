@@ -144,7 +144,7 @@ const DocumentsTable: React.FC = (): ReactElement => {
               <AlertDialogOverlay>
                 <AlertDialogContent>
                   <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                    Excluir Documento {documentToDelete}?
+                    Excluir documento {documentToDelete && handleDocument(documentToDelete)}?
                   </AlertDialogHeader>
 
                   <AlertDialogBody>
@@ -171,7 +171,8 @@ const DocumentsTable: React.FC = (): ReactElement => {
               <AlertDialogOverlay>
                 <AlertDialogContent>
                   <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                    Alterar blacklist do documento {documentToUpdate.value}?
+                    {documentToUpdate.blacklist ? 'Remover da ' : 'Incluir na '}
+                    blacklist {documentToUpdate.value && handleDocument(documentToUpdate.value)}?
                   </AlertDialogHeader>
 
                   <AlertDialogBody>
@@ -183,7 +184,7 @@ const DocumentsTable: React.FC = (): ReactElement => {
                       Cancelar
                     </Button>
                     <Button colorScheme="facebook" onClick={handleUpdateDocument} ml={3}>
-                      Alterar
+                      {documentToUpdate.blacklist ? 'Remover' : 'Incluir'}
                     </Button>
                   </AlertDialogFooter>
                 </AlertDialogContent>
@@ -209,7 +210,7 @@ const DocumentsTable: React.FC = (): ReactElement => {
                   <Td>{handleBlacklist(document.blacklist)}</Td>
                   <Td>
                     <Button colorScheme="facebook" onClick={() => { setUpdate(document) }}>
-                      Alterar
+                      {document.blacklist ? 'Remover' : 'Incluir'}
                     </Button>
                   </Td>
                   <Td>
