@@ -81,11 +81,11 @@ const validateCPF = (strCPF: string): boolean => {
   
   rest = (sum * 10) % 11;
 
-  if ((rest == 10) || (rest == 11)) {
+  if ((rest === 10) || (rest === 11)) {
     rest = 0;
   }
   
-  if (rest != parseInt(strCPF.substring(9, 10)) ) {
+  if (rest !== parseInt(strCPF.substring(9, 10)) ) {
     return false;
   }
 
@@ -96,11 +96,11 @@ const validateCPF = (strCPF: string): boolean => {
   
   rest = (sum * 10) % 11;
 
-  if ((rest == 10) || (rest == 11)) {
+  if ((rest === 10) || (rest === 11)) {
     rest = 0;
   }
   
-  if (rest != parseInt(strCPF.substring(10, 11) ) ) {
+  if (rest !== parseInt(strCPF.substring(10, 11) ) ) {
     return false;
   }
 
