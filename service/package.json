@@ -27,6 +27,7 @@
     "helmet": "^4.4.1",
     "mongodb": "^3.6.6",
     "reflect-metadata": "^0.1.13",
+    "ts-jest": "^26.5.4",
     "typeorm": "^0.2.32"
   }
 }
