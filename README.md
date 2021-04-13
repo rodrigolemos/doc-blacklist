@@ -22,12 +22,14 @@ $ cd doc-blacklist
 
 # Instancie os containers da aplicação
 $ docker-compose up -d --build
+```
 
-# Aguarde o processo de instalação ser finalizado. Serão criados 3 containers:
-# 1- doc-blacklist-mongo: MongoDB exclusivo para a aplicação
-# 2- doc-blacklist-service: Back-end da aplicação
-# 3- doc-blacklist-ui: Interface da aplicação
+Aguarde o processo de instalação ser finalizado. Serão criados 3 containers:
+- doc-blacklist-mongo: MongoDB exclusivo para a aplicação
+- doc-blacklist-service: Back-end da aplicação
+- doc-blacklist-ui: Interface da aplicação
 
+```bash
 # Verifique se o serviço foi iniciado sem problemas
 $ docker logs doc-blacklist-mongo
 
@@ -36,6 +38,12 @@ $ docker logs doc-blacklist-mongo
 ```
 
 Após esses passos, a interface da aplicação estará disponível na porta 3000. Acesse-a pelo navegador através do endereço http://localhost:3000.
+
+## Layout preview
+
+<p align="left">
+  <img alt="Principal" src="https://github.com/rodrigolemos/doc-blacklist/blob/main/ui/public/assets/doc-blacklist-preview.JPG" style="width: 1100px; margin-top: 10px; margin-right: 5px;">
+</p>
 
 ## Definições
 
