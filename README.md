@@ -2,7 +2,6 @@
 <p>
   <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/rodrigolemos/doc-blacklist">
   <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/rodrigolemos/doc-blacklist">
-  <img alt="GitHub" src="https://img.shields.io/github/license/rodrigolemos/doc-blacklist">
 </p>
 
 ## Sobre
